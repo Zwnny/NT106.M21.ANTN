@@ -1,0 +1,39 @@
+D:\VisualStudio\source\repos\Server\Server\bin\Debug\Server.exe.config
+D:\VisualStudio\source\repos\Server\Server\bin\Debug\Server.exe
+D:\VisualStudio\source\repos\Server\Server\bin\Debug\Server.pdb
+D:\VisualStudio\source\repos\Server\Server\obj\Debug\Server.csproj.AssemblyReference.cache
+D:\VisualStudio\source\repos\Server\Server\obj\Debug\Server.csproj.SuggestedBindingRedirects.cache
+D:\VisualStudio\source\repos\Server\Server\obj\Debug\Server.Properties.Resources.resources
+D:\VisualStudio\source\repos\Server\Server\obj\Debug\Server.csproj.GenerateResource.cache
+D:\VisualStudio\source\repos\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+D:\VisualStudio\source\repos\Server\Server\obj\Debug\Server.exe
+D:\VisualStudio\source\repos\Server\Server\obj\Debug\Server.pdb
+D:\VisualStudio\source\repos\Server\Server\obj\Debug\Server.DashBoard.resources
+D:\VisualStudio\source\repos\Server\Server\obj\Debug\Server.ControlForm.resources
+D:\VisualStudio\source\repos\Server\Server\obj\Debug\Server.Keylogger.resources
+D:\Download\Share Screen Functionality\Server\Server\bin\Debug\Server.exe.config
+D:\Download\Share Screen Functionality\Server\Server\bin\Debug\Server.exe
+D:\Download\Share Screen Functionality\Server\Server\bin\Debug\Server.pdb
+D:\Download\Share Screen Functionality\Server\Server\obj\Debug\Server.csproj.AssemblyReference.cache
+D:\Download\Share Screen Functionality\Server\Server\obj\Debug\Server.csproj.SuggestedBindingRedirects.cache
+D:\Download\Share Screen Functionality\Server\Server\obj\Debug\Server.DashBoard.resources
+D:\Download\Share Screen Functionality\Server\Server\obj\Debug\Server.ControlForm.resources
+D:\Download\Share Screen Functionality\Server\Server\obj\Debug\Server.Keylogger.resources
+D:\Download\Share Screen Functionality\Server\Server\obj\Debug\Server.Properties.Resources.resources
+D:\Download\Share Screen Functionality\Server\Server\obj\Debug\Server.csproj.GenerateResource.cache
+D:\Download\Share Screen Functionality\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+D:\Download\Share Screen Functionality\Server\Server\obj\Debug\Server.exe
+D:\Download\Share Screen Functionality\Server\Server\obj\Debug\Server.pdb
+D:\Download\Share Screen Functionality(edited)\Server\Server\bin\Debug\Server.exe.config
+D:\Download\Share Screen Functionality(edited)\Server\Server\bin\Debug\Server.exe
+D:\Download\Share Screen Functionality(edited)\Server\Server\bin\Debug\Server.pdb
+D:\Download\Share Screen Functionality(edited)\Server\Server\obj\Debug\Server.csproj.AssemblyReference.cache
+D:\Download\Share Screen Functionality(edited)\Server\Server\obj\Debug\Server.csproj.SuggestedBindingRedirects.cache
+D:\Download\Share Screen Functionality(edited)\Server\Server\obj\Debug\Server.DashBoard.resources
+D:\Download\Share Screen Functionality(edited)\Server\Server\obj\Debug\Server.ControlForm.resources
+D:\Download\Share Screen Functionality(edited)\Server\Server\obj\Debug\Server.Keylogger.resources
+D:\Download\Share Screen Functionality(edited)\Server\Server\obj\Debug\Server.Properties.Resources.resources
+D:\Download\Share Screen Functionality(edited)\Server\Server\obj\Debug\Server.csproj.GenerateResource.cache
+D:\Download\Share Screen Functionality(edited)\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+D:\Download\Share Screen Functionality(edited)\Server\Server\obj\Debug\Server.exe
+D:\Download\Share Screen Functionality(edited)\Server\Server\obj\Debug\Server.pdb
