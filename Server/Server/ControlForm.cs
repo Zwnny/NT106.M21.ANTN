@@ -60,12 +60,16 @@ namespace Server
             try
             {
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
+                
                 while (client.Connected)
-                {
+                {                
+
                     mainStream = client.GetStream();
                     ScreenCapture.Image = (Image)binaryFormatter.Deserialize(mainStream);
-                    //MessageBox.Show("Server receiving screen from client");
+                    
                 }
+                //else
+                    MessageBox.Show("Client disconnected");
             }
             catch { }
         }
@@ -102,6 +106,13 @@ namespace Server
         {
             server = new TcpListener(IPAddress.Any, 8080);
             Listening.Start();
+        }
+
+        private void btnHenGio_Click(object sender, EventArgs e)
+        {
+            mainStream = client.GetStream();
+            Form HenGio = new HenGio(mainStream);
+            HenGio.Show();
         }
     }
 }

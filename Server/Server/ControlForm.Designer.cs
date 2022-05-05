@@ -45,6 +45,7 @@
             this.btnHenGio.TabIndex = 0;
             this.btnHenGio.Text = "Hẹn giờ";
             this.btnHenGio.UseVisualStyleBackColor = true;
+            this.btnHenGio.Click += new System.EventHandler(this.btnHenGio_Click);
             // 
             // btnLogger
             // 

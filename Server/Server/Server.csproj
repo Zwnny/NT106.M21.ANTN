@@ -78,6 +78,9 @@
     <EmbeddedResource Include="ControlForm.resx">
       <DependentUpon>ControlForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="HenGio.resx">
+      <DependentUpon>HenGio.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Keylogger.resx">
       <DependentUpon>Keylogger.cs</DependentUpon>
     </EmbeddedResource>

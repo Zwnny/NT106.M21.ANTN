@@ -31,3 +31,14 @@ D:\Download\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.cs
 D:\Download\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
 D:\Download\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.exe
 D:\Download\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.pdb
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\bin\Debug\Client.exe.config
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\bin\Debug\Client.exe
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\bin\Debug\Client.pdb
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.AssemblyReference.cache
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.SuggestedBindingRedirects.cache
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.Client.resources
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.Properties.Resources.resources
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.GenerateResource.cache
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.exe
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.pdb

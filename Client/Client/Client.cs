@@ -22,10 +22,17 @@ namespace Client
         private readonly TcpClient client = new TcpClient();
         private NetworkStream mainStream;
         private NetworkStream SignalStream;
+        private Thread Listening;
         public Client()
         {
+            CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
         }
+        void Shutdown(string command)
+        {
+            System.Diagnostics.Process.Start("shutdown", command);
+        }
+
         private Image GrabDesktop()
         {
             Rectangle rect = Screen.PrimaryScreen.WorkingArea;
@@ -33,56 +40,82 @@ namespace Client
             Bitmap screenBitmap = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
             Graphics screenGraphics = Graphics.FromImage(screenBitmap);
             screenGraphics.CopyFromScreen(rect.X, rect.Y, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
+           
+           /* Uncomment câu này để dùng chức năng hiển thị con trỏ (còn hơi cùi, tọa độ k chính xác)
+            
+            screenGraphics.DrawIcon(new Icon("Sample.ico"), Cursor.Position.X - 50, Cursor.Position.Y - 50);
+
+            */
 
             return screenBitmap;
         }
+
+       
         private void SendDesktopImage()
         {
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
-            //mainStream = client.GetStream();
-            binaryFormatter.Serialize(mainStream, GrabDesktop());
+            try
+            {
+                while(true)
+                {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                mainStream = client.GetStream();
+                binaryFormatter.Serialize(mainStream, GrabDesktop());
+                //Thread.Sleep(100);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+
 
         }
         private void Client_Load(object sender, EventArgs e)
         {
             client.Connect(IPAddress.Parse("127.0.0.1"), 8080);
-            //timer1.Start();
             while (true)
             {
                 mainStream = client.GetStream();
-                MessageBox.Show("Client said hello");
+                //MessageBox.Show("Client said hello");
                 byte[] data = new byte[1024];
                 int numBytesRead = mainStream.Read(data, 0, data.Length);
+                string signal;
                 string command;
                 if (numBytesRead > 0)
                 {
-                    command = Encoding.ASCII.GetString(data, 0, numBytesRead);
+                    signal = Encoding.ASCII.GetString(data, 0, numBytesRead);
+                    command = signal.Substring(0, signal.IndexOf('$'));
 
-                    if (command.Substring(0, command.IndexOf('$')) == "Share Screen")
-                    {                      
-                        timer1.Start();
+                    if (command == "Share Screen")
+                    {
+                        //Listening = new Thread(Timer_Processing);
+                        //Listening.Start();
+                        //timer1.Start();
                         //SignalStream.Close();
-                        MessageBox.Show(command.Substring(0, command.IndexOf('$')));
-                        break;
-                        
+                        //System.Diagnostics.
+                        Thread t = new Thread(SendDesktopImage);
+                        t.Start();
+                        //break;
+
+                    }
+                    if (command.StartsWith("shutdown")) // command = shutdown -s -t
+                    {
+                        // timer1.Start();
+                        //SignalStream.Close();
+                        String[] separator = { "shutdown" };
+                        String arg = command.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0];
+                        Shutdown(arg);
+
+
+                        //break;
+
                     }
                 }
 
             }
-
-
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                SendDesktopImage();
-            }
-            catch
-            {
-                timer1.Stop();
-            }
-        }
+
     }
 }
