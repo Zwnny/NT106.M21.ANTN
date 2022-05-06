@@ -16,7 +16,8 @@ namespace Client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Client());
+            Client client = new Client();
+            Application.Run(client);
         }
     }
 }

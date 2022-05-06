@@ -31,8 +31,6 @@ namespace Server
         private void btnShutdown_Click(object sender, EventArgs e)
         {
                
-
-
             decimal secondtoShutdown = (Hour.Value) * 3600 + (Minute.Value) * 60 + Second.Value;
             string command = "shutdown -s -t " + secondtoShutdown.ToString() + "$";
 
@@ -47,8 +45,10 @@ namespace Server
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            string command = " -a";
-            Shutdown(command); // Cancel Shutdown
+            string command = "shutdown -a$";
+            Byte[] CancelShutdownCommand = Encoding.ASCII.GetBytes(command);
+            hengioStream.Write(CancelShutdownCommand, 0, CancelShutdownCommand.Length);
+            //Shutdown(command); // Cancel Shutdown
         }
     }
 }

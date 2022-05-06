@@ -102,7 +102,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "ControlForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Server";
             this.Load += new System.EventHandler(this.ControlForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ScreenCapture)).EndInit();
             this.ResumeLayout(false);

@@ -19,14 +19,99 @@ namespace Client
 {
     public partial class Client : Form
     {
-        private readonly TcpClient client = new TcpClient();
-        private NetworkStream mainStream;
-        private NetworkStream SignalStream;
-        private Thread Listening;
+        private static ManualResetEvent mre = new ManualResetEvent(false);
+        private readonly TcpClient signalclient = new TcpClient();
+        private readonly TcpClient dataclient = new TcpClient();
+        private NetworkStream dataStream;
+        private NetworkStream signalStream;
+
+        private Thread ConnectServer;
+        private Thread ShareScreen;
+        bool stopsharing = false;
+        string secret = "@#%^*&*)&*()*)(*)(*)"; // Initialize random char
         public Client()
         {
             CheckForIllegalCrossThreadCalls = false;
+            ShareScreen = new Thread(SendDesktopImage);
+            ShareScreen.IsBackground = true;
+            
             InitializeComponent();
+            
+        }
+
+        void TakeCommandFromServer()
+        {
+            this.Hide();
+            while (signalclient.Connected)
+            {
+                try
+                {
+                    signalStream = signalclient.GetStream();
+
+                    //MessageBox.Show("Client said hello");
+                    byte[] data = new byte[1024];
+                    int numBytesRead = signalStream.Read(data, 0, data.Length);
+                    string signal;
+                    string command;
+                    if (numBytesRead > 0)
+                    {
+                        signal = Encoding.ASCII.GetString(data, 0, numBytesRead);
+                        command = signal.Substring(0, signal.IndexOf('$'));
+
+                        //dataStream = dataclient.GetStream();
+                        if (command.StartsWith("secret"))
+                        {
+                            String[] separator = { ":" };
+                            secret = command.Split(separator, StringSplitOptions.RemoveEmptyEntries)[1];
+                            MessageBox.Show(secret);
+                        }
+                        if (command == "Share Screen")
+                        {
+                            if (!ShareScreen.IsAlive)
+                                ShareScreen.Start();
+                            else
+                            {
+                                stopsharing = false;
+                                mre.Set();
+                            }
+
+                            //break;
+
+                        }
+                        if (command == "Stop Share Screen")
+                        {
+                            stopsharing = true;
+                            //ShareScreen.Abort();
+                        }
+                        if (command.StartsWith("shutdown -s -t")) // command = shutdown -s -t
+                        {
+                            // timer1.Start();
+                            //SignalStream.Close();
+                            String[] separator = { "shutdown" };
+                            String arg = command.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0];
+                            Shutdown(arg);
+                        }
+
+                        if (command == "shutdown -a") // command = shutdown -s -t
+                        {
+                            // timer1.Start();
+                            //SignalStream.Close();
+                            String[] separator = { "shutdown" };
+                            String arg = command.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0];
+                            Shutdown(arg);
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+            MessageBox.Show("Server disconnected");
+            Application.Exit();
+
         }
         void Shutdown(string command)
         {
@@ -35,7 +120,9 @@ namespace Client
 
         private Image GrabDesktop()
         {
-            Rectangle rect = Screen.PrimaryScreen.WorkingArea;
+            Rectangle rect = Screen.PrimaryScreen.Bounds;
+            //rect.Height = (int)(rect.Height * 1.5);
+            //rect.Width = (int)(rect.Width * 1.5);
             //MessageBox.Show(rect.Size.ToString());
             Bitmap screenBitmap = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
             Graphics screenGraphics = Graphics.FromImage(screenBitmap);
@@ -55,17 +142,18 @@ namespace Client
         {
             try
             {
-                while(true)
+                while(signalclient.Connected && ShareScreen.IsAlive)
                 {
+                    if (stopsharing) mre.WaitOne();
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
-                mainStream = client.GetStream();
-                binaryFormatter.Serialize(mainStream, GrabDesktop());
+                dataStream = dataclient.GetStream();
+                binaryFormatter.Serialize(dataStream, GrabDesktop());
                 //Thread.Sleep(100);
                 }
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
             }
 
 
@@ -73,46 +161,40 @@ namespace Client
         }
         private void Client_Load(object sender, EventArgs e)
         {
-            client.Connect(IPAddress.Parse("127.0.0.1"), 8080);
-            while (true)
+            //this.Hide();
+            //this.WindowState = FormWindowState.Maximized;
+            //Rectangle rect = Screen.PrimaryScreen.Bounds;
+            //rect.Height = (int) (rect.Height*1.5);
+            //rect.Width = (int)(rect.Width * 1.5);
+            //MessageBox.Show(rect.Size.ToString());
+
+            //float dpiX, dpiY;
+            //Graphics graphics = this.CreateGraphics();
+            //dpiX = graphics.DpiX;
+            //dpiY = graphics.DpiY;
+            //MessageBox.Show(dpiX.ToString() + "  " + dpiY.ToString());
+
+
+            signalclient.Connect(IPAddress.Parse("127.0.0.1"), 8080);
+            dataclient.Connect(IPAddress.Parse("127.0.0.1"), 8081);
+
+            ConnectServer = new Thread(TakeCommandFromServer);
+            ConnectServer.IsBackground = true;
+            ConnectServer.Start();
+
+        }
+
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            String password = Microsoft.VisualBasic.Interaction.InputBox("Nhập mật khẩu bảo vệ ", "Mật khẩu", "", -1, -1);
+            
+            if (password == secret )
             {
-                mainStream = client.GetStream();
-                //MessageBox.Show("Client said hello");
-                byte[] data = new byte[1024];
-                int numBytesRead = mainStream.Read(data, 0, data.Length);
-                string signal;
-                string command;
-                if (numBytesRead > 0)
-                {
-                    signal = Encoding.ASCII.GetString(data, 0, numBytesRead);
-                    command = signal.Substring(0, signal.IndexOf('$'));
-
-                    if (command == "Share Screen")
-                    {
-                        //Listening = new Thread(Timer_Processing);
-                        //Listening.Start();
-                        //timer1.Start();
-                        //SignalStream.Close();
-                        //System.Diagnostics.
-                        Thread t = new Thread(SendDesktopImage);
-                        t.Start();
-                        //break;
-
-                    }
-                    if (command.StartsWith("shutdown")) // command = shutdown -s -t
-                    {
-                        // timer1.Start();
-                        //SignalStream.Close();
-                        String[] separator = { "shutdown" };
-                        String arg = command.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0];
-                        Shutdown(arg);
-
-
-                        //break;
-
-                    }
-                }
-
+                Application.Exit();
+            }
+            else
+            {
+                MessageBox.Show("Bạn đã nhập mật khẩu sai ! ", " Lỗi");
             }
         }
 
