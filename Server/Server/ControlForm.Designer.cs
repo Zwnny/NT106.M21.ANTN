@@ -56,6 +56,7 @@
             this.btnLogger.TabIndex = 1;
             this.btnLogger.Text = "Keylogger";
             this.btnLogger.UseVisualStyleBackColor = true;
+            this.btnLogger.Click += new System.EventHandler(this.btnLogger_Click);
             // 
             // btnDkChuot
             // 
@@ -93,7 +94,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1713, 718);
+            this.ClientSize = new System.Drawing.Size(1713, 817);
             this.Controls.Add(this.btnShareScreen);
             this.Controls.Add(this.ScreenCapture);
             this.Controls.Add(this.btnDkChuot);

