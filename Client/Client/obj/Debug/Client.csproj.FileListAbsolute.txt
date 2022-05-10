@@ -1,0 +1,46 @@
+D:\VisualStudio\source\repos\Client\Client\obj\Debug\Client.csproj.AssemblyReference.cache
+D:\VisualStudio\source\repos\Client\Client\obj\Debug\Client.csproj.SuggestedBindingRedirects.cache
+D:\VisualStudio\source\repos\Client\Client\obj\Debug\Client.Properties.Resources.resources
+D:\VisualStudio\source\repos\Client\Client\obj\Debug\Client.csproj.GenerateResource.cache
+D:\VisualStudio\source\repos\Client\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+D:\VisualStudio\source\repos\Client\Client\bin\Debug\Client.exe.config
+D:\VisualStudio\source\repos\Client\Client\bin\Debug\Client.exe
+D:\VisualStudio\source\repos\Client\Client\bin\Debug\Client.pdb
+D:\VisualStudio\source\repos\Client\Client\obj\Debug\Client.exe
+D:\VisualStudio\source\repos\Client\Client\obj\Debug\Client.pdb
+D:\VisualStudio\source\repos\Client\Client\obj\Debug\Client.Client.resources
+D:\Download\Share Screen Functionality\Client\Client\bin\Debug\Client.exe.config
+D:\Download\Share Screen Functionality\Client\Client\bin\Debug\Client.exe
+D:\Download\Share Screen Functionality\Client\Client\bin\Debug\Client.pdb
+D:\Download\Share Screen Functionality\Client\Client\obj\Debug\Client.csproj.AssemblyReference.cache
+D:\Download\Share Screen Functionality\Client\Client\obj\Debug\Client.csproj.SuggestedBindingRedirects.cache
+D:\Download\Share Screen Functionality\Client\Client\obj\Debug\Client.Client.resources
+D:\Download\Share Screen Functionality\Client\Client\obj\Debug\Client.Properties.Resources.resources
+D:\Download\Share Screen Functionality\Client\Client\obj\Debug\Client.csproj.GenerateResource.cache
+D:\Download\Share Screen Functionality\Client\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+D:\Download\Share Screen Functionality\Client\Client\obj\Debug\Client.exe
+D:\Download\Share Screen Functionality\Client\Client\obj\Debug\Client.pdb
+D:\Download\Share Screen Functionality(edited)\Client\Client\bin\Debug\Client.exe.config
+D:\Download\Share Screen Functionality(edited)\Client\Client\bin\Debug\Client.exe
+D:\Download\Share Screen Functionality(edited)\Client\Client\bin\Debug\Client.pdb
+D:\Download\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.AssemblyReference.cache
+D:\Download\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.SuggestedBindingRedirects.cache
+D:\Download\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.Client.resources
+D:\Download\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.Properties.Resources.resources
+D:\Download\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.GenerateResource.cache
+D:\Download\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+D:\Download\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.exe
+D:\Download\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.pdb
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\bin\Debug\Client.exe.config
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\bin\Debug\Client.exe
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\bin\Debug\Client.pdb
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.AssemblyReference.cache
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.SuggestedBindingRedirects.cache
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.Client.resources
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.Properties.Resources.resources
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.GenerateResource.cache
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.exe
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.pdb
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\bin\Debug\KeystrokeAPI.dll
+D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.CopyComplete
