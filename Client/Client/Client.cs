@@ -132,18 +132,15 @@ namespace Client
         private Image GrabDesktop()
         {
             Rectangle rect = Screen.PrimaryScreen.Bounds;
-            //rect.Height = (int)(rect.Height * 1.5);
-            //rect.Width = (int)(rect.Width * 1.5);
+            rect.Height = (int)(rect.Height * 1.25);
+            rect.Width = (int)(rect.Width * 1.25);
             //MessageBox.Show(rect.Size.ToString());
             Bitmap screenBitmap = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
             Graphics screenGraphics = Graphics.FromImage(screenBitmap);
             screenGraphics.CopyFromScreen(rect.X, rect.Y, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
            
-           /* Uncomment câu này để dùng chức năng hiển thị con trỏ (còn hơi cùi, tọa độ k chính xác)
-            
             screenGraphics.DrawIcon(new Icon("Sample.ico"), Cursor.Position.X - 50, Cursor.Position.Y - 50);
 
-            */
 
             return screenBitmap;
         }

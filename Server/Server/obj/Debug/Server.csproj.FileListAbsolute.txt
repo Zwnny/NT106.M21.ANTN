@@ -51,3 +51,17 @@ D:\Code_Project\NT106\Share Screen Functionality(edited)\Server\Server\obj\Debug
 D:\Code_Project\NT106\Share Screen Functionality(edited)\Server\Server\obj\Debug\Server.exe
 D:\Code_Project\NT106\Share Screen Functionality(edited)\Server\Server\obj\Debug\Server.pdb
 D:\Code_Project\NT106\Share Screen Functionality(edited)\Server\Server\obj\Debug\Server.HenGio.resources
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\bin\Debug\Server.exe.config
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\bin\Debug\Server.exe
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\bin\Debug\Server.pdb
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\obj\Debug\Server.csproj.AssemblyReference.cache
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\obj\Debug\Server.csproj.SuggestedBindingRedirects.cache
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\obj\Debug\Server.DashBoard.resources
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\obj\Debug\Server.ControlForm.resources
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\obj\Debug\Server.HenGio.resources
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\obj\Debug\Server.Keylogger.resources
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\obj\Debug\Server.Properties.Resources.resources
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\obj\Debug\Server.csproj.GenerateResource.cache
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\obj\Debug\Server.exe
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Server\Server\obj\Debug\Server.pdb

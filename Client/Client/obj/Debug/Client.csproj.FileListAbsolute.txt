@@ -44,3 +44,16 @@ D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug
 D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.pdb
 D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\bin\Debug\KeystrokeAPI.dll
 D:\Code_Project\NT106\Share Screen Functionality(edited)\Client\Client\obj\Debug\Client.csproj.CopyComplete
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Client\Client\bin\Debug\Client.exe.config
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Client\Client\bin\Debug\Client.exe
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Client\Client\bin\Debug\Client.pdb
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Client\Client\bin\Debug\KeystrokeAPI.dll
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Client\Client\obj\Debug\Client.csproj.AssemblyReference.cache
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Client\Client\obj\Debug\Client.csproj.SuggestedBindingRedirects.cache
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Client\Client\obj\Debug\Client.Client.resources
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Client\Client\obj\Debug\Client.Properties.Resources.resources
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Client\Client\obj\Debug\Client.csproj.GenerateResource.cache
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Client\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Client\Client\obj\Debug\Client.csproj.CopyComplete
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Client\Client\obj\Debug\Client.exe
+D:\Learn\Lập trình mạng\Đồ án\NT106.M21.ANTN\Client\Client\obj\Debug\Client.pdb

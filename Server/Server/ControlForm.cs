@@ -36,68 +36,78 @@ namespace Server
         private Thread KeyLogger;
 
         bool stopsharing = false;
-        public ControlForm()
+        public ControlForm(
+                           TcpClient sclient,
+                           TcpClient slogClient,
+                           TcpClient sscreenClient
+                          )
         {
+
+            client = sclient;
+            logClient = slogClient;
+            screenClient = sscreenClient;
             //client = new TcpClient();
 
-            Listening = new Thread(StartListening);
+            //Listening = new Thread(StartListening);
             GetImage = new Thread(ReceiveImage);
 
-            Listening.IsBackground = true;
+            //Listening.IsBackground = true;
             GetImage.IsBackground = true;
+
+
 
             InitializeComponent();
         }
-        private void StartListening()
-        {
-            try
-            {
-                server.Start();
-                screenServer.Start();
-                logServer.Start();
-                while (true)
-                {                             
-                    client = server.AcceptTcpClient();
-                    screenClient = screenServer.AcceptTcpClient();
-                    logClient = logServer.AcceptTcpClient();
+        //private void StartListening()
+        //{
+        //    try
+        //    {
+        //        server.Start();
+        //        screenServer.Start();
+        //        logServer.Start();
+        //        while (true)
+        //        {                             
+        //            client = server.AcceptTcpClient();
+        //            screenClient = screenServer.AcceptTcpClient();
+        //            logClient = logServer.AcceptTcpClient();
 
-                    Random random = new Random();
-                    int length = 10;
-                    var secret = "";
-                    for (var i = 0; i < length; i++)
-                    {
-                        secret += ((char)(random.Next(1, 26) + 64)).ToString();
+        //            Random random = new Random();
+        //            int length = 10;
+        //            var secret = "";
+        //            for (var i = 0; i < length; i++)
+        //            {
+        //                secret += ((char)(random.Next(1, 26) + 64)).ToString();
 
-                    }
-                    mainStream = client.GetStream();
-                    Byte[] sendsecret = Encoding.ASCII.GetBytes("secrete:" + secret + "$");
-                    mainStream.Write(sendsecret, 0, sendsecret.Length);
+        //            }
+        //            mainStream = client.GetStream();
+        //            Byte[] sendsecret = Encoding.ASCII.GetBytes("secrete:" + secret + "$");
+        //            mainStream.Write(sendsecret, 0, sendsecret.Length);
 
-                    //MessageBox.Show(secret);
+        //            //MessageBox.Show(secret);
 
 
-                }
-                
-            }
-            catch
-            {
-                StopListening();
-            }
-        }
-        private void StopListening()
-        {
-            server.Stop();
-            screenServer.Stop();
-            logServer.Stop();
-            if (Listening.IsAlive)
-                Listening.Abort();
-            //if (GetImage.IsAlive)
-            //    GetImage.Abort();
-                
-        }
+        //        }
+
+        //    }
+        //    catch
+        //    {
+        //        StopListening();
+        //    }
+        //}
+        //private void StopListening()
+        //{
+        //    server.Stop();
+        //    screenServer.Stop();
+        //    logServer.Stop();
+        //    if (Listening.IsAlive)
+        //        Listening.Abort();
+        //    //if (GetImage.IsAlive)
+        //    //    GetImage.Abort();
+
+        //}
         private void StopSharing()
         {
-            stopsharing = true;   
+            stopsharing = true;
         }
         private void ReceiveImage()
         {
@@ -166,10 +176,10 @@ namespace Server
 
         private void ControlForm_Load(object sender, EventArgs e)
         {
-            server = new TcpListener(IPAddress.Any, 8080);
-            screenServer = new TcpListener(IPAddress.Any, 8081);
-            logServer = new TcpListener(IPAddress.Any, 8082);
-            Listening.Start();
+            //server = new TcpListener(IPAddress.Any, 8080);
+            //screenServer = new TcpListener(IPAddress.Any, 8081);
+            //logServer = new TcpListener(IPAddress.Any, 8082);
+            //Listening.Start();
         }
 
         private void btnHenGio_Click(object sender, EventArgs e)
