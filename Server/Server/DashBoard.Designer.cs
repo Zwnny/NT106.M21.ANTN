@@ -91,8 +91,8 @@
             // 
             // labelControl1
             // 
-            this.labelControl1.Location = new System.Drawing.Point(1205, 25);
-            this.labelControl1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.labelControl1.Location = new System.Drawing.Point(2352, 49);
+            this.labelControl1.Margin = new System.Windows.Forms.Padding(10, 10, 10, 10);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(75, 16);
             this.labelControl1.TabIndex = 4;
@@ -118,14 +118,14 @@
             this.label3.ForeColor = System.Drawing.Color.Transparent;
             this.label3.Location = new System.Drawing.Point(388, 511);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(246, 52);
+            this.label3.Size = new System.Drawing.Size(241, 51);
             this.label3.TabIndex = 6;
             this.label3.Text = "SUBCL0WN";
             // 
             // pictureBox3
             // 
             this.pictureBox3.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
+            this.pictureBox3.Image = global::Server.Properties.Resources.pngwing_com_removebg_preview;
             this.pictureBox3.Location = new System.Drawing.Point(84, 213);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(261, 270);
@@ -136,7 +136,7 @@
             // pictureBox4
             // 
             this.pictureBox4.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox4.Image")));
+            this.pictureBox4.Image = global::Server.Properties.Resources.pngwing_com_removebg_preview;
             this.pictureBox4.Location = new System.Drawing.Point(351, 213);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(325, 334);
@@ -147,7 +147,7 @@
             // pictureBox5
             // 
             this.pictureBox5.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox5.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox5.Image")));
+            this.pictureBox5.Image = global::Server.Properties.Resources.pngwing_com_removebg_preview;
             this.pictureBox5.Location = new System.Drawing.Point(682, 213);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(261, 270);
@@ -159,7 +159,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImage = global::Server.Properties.Resources.abstract_network__background__red_and_blue_gradient;
             this.ClientSize = new System.Drawing.Size(1298, 590);
             this.Controls.Add(this.pictureBox5);
             this.Controls.Add(this.label3);

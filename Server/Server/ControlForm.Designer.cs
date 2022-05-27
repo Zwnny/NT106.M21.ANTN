@@ -92,7 +92,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImage = global::Server.Properties.Resources.abstract_digital_network_mapping_by_mf3d_gettyimages_888477728_1200x800_100768192_large_jph;
             this.ClientSize = new System.Drawing.Size(1501, 681);
             this.Controls.Add(this.btnShareScreen);
             this.Controls.Add(this.ScreenCapture);
