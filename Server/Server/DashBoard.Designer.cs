@@ -30,10 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DashBoard));
             this.label1 = new System.Windows.Forms.Label();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.connectionInfo = new System.Windows.Forms.RichTextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -58,18 +57,18 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "WELCOME";
             // 
-            // richTextBox1
+            // connectionInfo
             // 
-            this.richTextBox1.BackColor = System.Drawing.SystemColors.InfoText;
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox1.Font = new System.Drawing.Font("Times New Roman", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.ForeColor = System.Drawing.Color.Lime;
-            this.richTextBox1.Location = new System.Drawing.Point(972, 80);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(323, 483);
-            this.richTextBox1.TabIndex = 1;
-            this.richTextBox1.Text = "";
+            this.connectionInfo.BackColor = System.Drawing.SystemColors.InfoText;
+            this.connectionInfo.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.connectionInfo.Font = new System.Drawing.Font("Times New Roman", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.connectionInfo.ForeColor = System.Drawing.Color.Lime;
+            this.connectionInfo.Location = new System.Drawing.Point(972, 80);
+            this.connectionInfo.Name = "connectionInfo";
+            this.connectionInfo.ReadOnly = true;
+            this.connectionInfo.Size = new System.Drawing.Size(323, 483);
+            this.connectionInfo.TabIndex = 1;
+            this.connectionInfo.Text = "";
             // 
             // pictureBox1
             // 
@@ -88,15 +87,6 @@
             this.pictureBox2.Size = new System.Drawing.Size(10, 551);
             this.pictureBox2.TabIndex = 3;
             this.pictureBox2.TabStop = false;
-            // 
-            // labelControl1
-            // 
-            this.labelControl1.Location = new System.Drawing.Point(2352, 49);
-            this.labelControl1.Margin = new System.Windows.Forms.Padding(10, 10, 10, 10);
-            this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(75, 16);
-            this.labelControl1.TabIndex = 4;
-            this.labelControl1.Text = "labelControl1";
             // 
             // label2
             // 
@@ -164,10 +154,9 @@
             this.Controls.Add(this.pictureBox5);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.labelControl1);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.connectionInfo);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.pictureBox4);
@@ -189,10 +178,9 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox connectionInfo;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private DevExpress.XtraEditors.LabelControl labelControl1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pictureBox3;

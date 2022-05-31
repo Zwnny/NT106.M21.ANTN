@@ -79,12 +79,6 @@ D:\LTM\project\NT106.M21.ANTN\Server\Server\obj\Debug\Server.csproj.GenerateReso
 D:\LTM\project\NT106.M21.ANTN\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
 D:\LTM\project\NT106.M21.ANTN\Server\Server\obj\Debug\Server.exe
 D:\LTM\project\NT106.M21.ANTN\Server\Server\obj\Debug\Server.pdb
-D:\LTM\project\NT106.M21.ANTN\Server\Server\bin\Debug\DevExpress.Data.Desktop.v21.2.dll
-D:\LTM\project\NT106.M21.ANTN\Server\Server\bin\Debug\DevExpress.Data.v21.2.dll
-D:\LTM\project\NT106.M21.ANTN\Server\Server\bin\Debug\DevExpress.Printing.v21.2.Core.dll
-D:\LTM\project\NT106.M21.ANTN\Server\Server\bin\Debug\DevExpress.Sparkline.v21.2.Core.dll
-D:\LTM\project\NT106.M21.ANTN\Server\Server\bin\Debug\DevExpress.Utils.v21.2.dll
-D:\LTM\project\NT106.M21.ANTN\Server\Server\bin\Debug\DevExpress.XtraEditors.v21.2.dll
 D:\LTM\project\NT106.M21.ANTN\Server\Server\bin\Debug\DevExpress.Pdf.v21.2.Core.dll
 D:\LTM\project\NT106.M21.ANTN\Server\Server\bin\Debug\DevExpress.Pdf.v21.2.Drawing.dll
 D:\LTM\project\NT106.M21.ANTN\Server\Server\bin\Debug\DevExpress.Data.Desktop.v21.2.xml

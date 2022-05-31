@@ -15,8 +15,6 @@ namespace Server
         private TcpListener screenServer;
         private TcpListener logServer;
         private readonly Thread Listening;
-
-        const string KEY = "CHƯƠNG TRÌNH THEO DÕI TỪ XA";
         public DashBoard()
         {
             CheckForIllegalCrossThreadCalls = false;
@@ -35,13 +33,11 @@ namespace Server
                 while (true)
                 {
                     client = server.AcceptTcpClient();
-
                     screenClient = screenServer.AcceptTcpClient();
-
                     logClient = logServer.AcceptTcpClient();
 
+                    connectionInfo.Text += client.Client.RemoteEndPoint.ToString() + "\n";
 
-                    richTextBox1.Text += client.Client.RemoteEndPoint.ToString() + "\n";
                     Thread Handle = new Thread(HandleClient);
                     Handle.IsBackground = true;
                     Handle.Start();
@@ -71,10 +67,10 @@ namespace Server
         public void HandleClient()
         {
             string clientID = client.Client.RemoteEndPoint.ToString();
-            Form c = new ControlForm(client, logClient, screenClient, clientID);
-            c.Name = clientID;
-            c.Text = clientID;
-            c.Show();
+            Form controlForm = new ControlForm(client, logClient, screenClient, clientID);
+            controlForm.Name = clientID;
+            controlForm.Text = clientID;
+            controlForm.Show();
             Application.Run();
         }
     }
